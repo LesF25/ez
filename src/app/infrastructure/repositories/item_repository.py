@@ -2,10 +2,9 @@ from typing import AsyncGenerator
 
 from sqlalchemy import Result, insert, select, delete
 
-from src.core.domain.repository import PrimaryKeyType, EntityType
-from src.core.infrastructure.postgres.models import Item
-from src.app.entities.item import ItemEntity
-from src.app.infrastructure.repositories.repository import (
+from src.app.infrastructure.postgres.models import Item
+from src.app.domain.entities import ItemEntity
+from src.app.infrastructure.repositories.base import (
     SQLAlchemyAbstractRepository
 )
 

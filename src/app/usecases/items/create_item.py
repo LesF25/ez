@@ -1,6 +1,6 @@
 from src.app.infrastructure.repositories.item_repository import ItemRepository
-from src.core.domain import UseCase, RepositoryMixin
-from src.app.entities.item import ItemEntity
+from src.app.domain import UseCase, RepositoryMixin
+from src.app.domain.entities import ItemEntity
 from src.app.schemas.items import CreateItemRequest, ItemResponse
 
 

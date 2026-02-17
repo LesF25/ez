@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.domain.repository import AbstractRepository
+from src.app.domain.repository import AbstractRepository
 
 
 class SQLAlchemyAbstractRepository(AbstractRepository):

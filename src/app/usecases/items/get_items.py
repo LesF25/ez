@@ -1,5 +1,5 @@
 from src.app.infrastructure.repositories.item_repository import ItemRepository
-from src.core.domain import UseCase, RepositoryMixin
+from src.app.domain import UseCase, RepositoryMixin
 from src.app.schemas.items import ItemResponse
 from src.app.schemas.common import PaginationRequest
 
