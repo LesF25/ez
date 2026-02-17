@@ -1,0 +1,17 @@
+from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
+
+from src.config import settings
+from src.app.presentation.api import router
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors.origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router)
