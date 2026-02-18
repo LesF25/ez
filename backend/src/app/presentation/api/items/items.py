@@ -10,7 +10,6 @@ from src.app.schemas.items import (
     ItemDeleteByIdRequest,
     ItemPaginationResponse, ItemPaginationRequest,
 )
-from src.app.schemas.common import PaginationRequest
 from src.app.usecases.items import (
     CreateItemUseCase,
     DeleteItemByIdUseCase,

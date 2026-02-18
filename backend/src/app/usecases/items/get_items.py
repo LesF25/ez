@@ -4,7 +4,7 @@ from src.app.domain.entities import ItemEntity
 from src.app.domain.repositories import ItemCursorPayload, ItemRepositoryBase
 from src.app.domain.use_case import UseCase, UseCaseRepositoryMixin
 from src.app.schemas.items import ItemResponse, ItemPaginationResponse, ItemPaginationRequest
-from src.app.utils.pagination import decode_cursor, encode_cursor
+from src.app.utils.pagination import encode_cursor
 
 
 class GetItemsUseCase(

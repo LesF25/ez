@@ -3,8 +3,8 @@ from abc import abstractmethod
 from datetime import datetime
 from typing import Optional, Any
 
-from .base_repository import AbstractRepository
 from src.app.domain.entities import ItemEntity
+from .base_repository import AbstractRepository
 
 
 @dataclasses.dataclass(frozen=True, slots=True)

@@ -1,5 +1,4 @@
-from datetime import datetime
-from typing import AsyncGenerator, Optional
+from typing import Optional
 
 from sqlalchemy import Result, insert, select, delete, tuple_
 

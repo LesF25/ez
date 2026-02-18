@@ -42,7 +42,10 @@ class PostgresSettings(BaseSettings):
 
 
 class CorsSettings(BaseSettings):
-    origins: list[str] = ['http://localhost']
+    origins: list[str] = [
+        'http://localhost:9000',
+        'http://127.0.0.1:9000',
+    ]
 
 
 class Settings(BaseSettings):

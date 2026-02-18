@@ -3,7 +3,7 @@
 .github
 
 # IDE and editor files
-.idea
+../.idea
 .vscode
 *.swp
 *.swo
@@ -31,6 +31,6 @@ logs/
 *.log
 
 # Docker
-Dockerfile*
+Dockerfile
 .dockerignore
 docker-compose*.yml
