@@ -16,6 +16,6 @@ class UseCase(Generic[UseCaseInput, UseCaseOutput]):
         raise NotImplementedError
 
 
-class RepositoryMixin(Generic[RepositoryType]):
+class UseCaseRepositoryMixin(Generic[RepositoryType]):
     def __init__(self, repository: RepositoryType) -> None:
         self._repository = repository

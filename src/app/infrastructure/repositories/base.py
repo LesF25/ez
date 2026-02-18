@@ -1,8 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.app.domain.repository import AbstractRepository
 
-
-class SQLAlchemyAbstractRepository(AbstractRepository):
+class SQLAlchemyAbstractRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session

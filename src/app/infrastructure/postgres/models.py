@@ -1,11 +1,8 @@
 from datetime import datetime
 
-from sqlalchemy import (
-    DateTime,
-    func,
-    MetaData,
-    Text,
-)
+from sqlalchemy.sql import func
+from sqlalchemy.types import DateTime, Text
+from sqlalchemy.schema import Index, MetaData
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -40,4 +37,12 @@ class Item(Base):
         DateTime(timezone=True),
         server_default=func.timezone('utc', func.now()),
         nullable=False,
+    )
+
+    __table_args__ = (
+        Index(
+            'ix_items_created_at_id',
+            created_at.desc(),
+            id.desc(),
+        ),
     )

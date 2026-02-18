@@ -4,10 +4,11 @@ from fastapi.params import Depends, Body, Query, Path
 
 from src.app.infrastructure.repositories.item_repository import ItemRepository
 from src.app.schemas.items import (
-    CreateItemRequest,
+    ItemCreateRequest,
     ItemResponse,
-    DeleteItemResponse,
-    DeleteItemByIdRequest,
+    ItemDeleteResponse,
+    ItemDeleteByIdRequest,
+    ItemPaginationResponse, ItemPaginationRequest,
 )
 from src.app.schemas.common import PaginationRequest
 from src.app.usecases.items import (
@@ -15,7 +16,7 @@ from src.app.usecases.items import (
     DeleteItemByIdUseCase,
     GetItemsUseCase,
 )
-from .dependency import get_item_repository, get_item_repository_tx
+from .dependency import get_item_repository, get_item_repository_tx, validate_cursor
 
 router = APIRouter(prefix='/items')
 
@@ -26,7 +27,7 @@ router = APIRouter(prefix='/items')
     status_code=status.HTTP_201_CREATED,
 )
 async def create_item(
-    dto: Annotated[CreateItemRequest, Body()],
+    dto: Annotated[ItemCreateRequest, Body()],
     repository: Annotated[ItemRepository, Depends(get_item_repository_tx)],
 ) -> ItemResponse:
     use_case = CreateItemUseCase(repository)
@@ -36,13 +37,13 @@ async def create_item(
 
 @router.get(
     path='',
-    response_model=list[ItemResponse],
+    response_model=ItemPaginationResponse,
     status_code=status.HTTP_200_OK,
 )
 async def get_items(
-    dto: Annotated[PaginationRequest, Query()],
+    dto: Annotated[ItemPaginationRequest, Depends(validate_cursor)],
     repository: Annotated[ItemRepository, Depends(get_item_repository)],
-) -> list[ItemResponse]:
+) -> ItemPaginationResponse:
     use_case = GetItemsUseCase(repository)
 
     return await use_case.execute(dto)
@@ -50,13 +51,13 @@ async def get_items(
 
 @router.delete(
     path='/{item_id}',
-    response_model=DeleteItemResponse,
+    response_model=ItemDeleteResponse,
     status_code=status.HTTP_200_OK,
 )
 async def delete_item_by_id(
-    dto: Annotated[DeleteItemByIdRequest, Path()],
+    dto: Annotated[ItemDeleteByIdRequest, Path()],
     repository: Annotated[ItemRepository, Depends(get_item_repository_tx)],
-) -> DeleteItemResponse:
+) -> ItemDeleteResponse:
     use_case = DeleteItemByIdUseCase(repository)
 
     return await use_case.execute(dto)

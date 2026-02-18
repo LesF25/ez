@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Optional
 
-from pydantic import BaseModel, StringConstraints, Field, ConfigDict, field_serializer
+from pydantic import BaseModel, StringConstraints, ConfigDict, field_serializer
 
 ItemText = Annotated[
     str,
@@ -13,7 +13,7 @@ ItemText = Annotated[
 ]
 
 
-class CreateItemRequest(BaseModel):
+class ItemCreateRequest(BaseModel):
     text: ItemText
 
 
@@ -32,9 +32,24 @@ class ItemResponse(BaseModel):
         return created_at.isoformat()
 
 
-class DeleteItemByIdRequest(BaseModel):
+class ItemDeleteByIdRequest(BaseModel):
     item_id: int
 
 
-class DeleteItemResponse(BaseModel):
+class ItemDeleteResponse(BaseModel):
     status: bool = True
+
+
+class ItemCursor(BaseModel):
+    id: int
+    created_at: datetime
+
+
+class ItemPaginationRequest(BaseModel):
+    limit: int
+    cursor: Optional[ItemCursor] = None
+
+
+class ItemPaginationResponse(BaseModel):
+    items: list[ItemResponse]
+    next_cursor: str | None = None

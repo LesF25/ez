@@ -1,10 +1,12 @@
-from typing import AsyncGenerator
+from datetime import datetime
+from typing import AsyncGenerator, Optional
 
-from sqlalchemy import Result, insert, select, delete
+from sqlalchemy import Result, insert, select, delete, tuple_
 
+from src.app.domain.repositories.item_repository import ItemRepositoryBase, ItemCursorPayload
 from src.app.infrastructure.postgres.models import Item
 from src.app.domain.entities import ItemEntity
-from src.app.infrastructure.repositories.base import (
+from src.app.infrastructure.repositories import (
     SQLAlchemyAbstractRepository
 )
 
@@ -18,7 +20,10 @@ class ItemMapper:
         )
 
 
-class ItemRepository(SQLAlchemyAbstractRepository):
+class ItemRepository(
+    SQLAlchemyAbstractRepository,
+    ItemRepositoryBase,
+):
     MAPPER = ItemMapper()
 
     async def save(self, entity: ItemEntity) -> ItemEntity:
@@ -31,15 +36,29 @@ class ItemRepository(SQLAlchemyAbstractRepository):
 
         return self.MAPPER.to_domain(item)
 
-    async def find_all(self, limit: int, offset: int) -> AsyncGenerator[ItemEntity, None]:
-        result = await self._session.stream_scalars(
+    async def find_all(
+        self,
+        limit: int,
+        cursor_payload: Optional[ItemCursorPayload] = None,
+    ) -> list[ItemEntity]:
+        stmt = (
             select(Item)
+            .order_by(Item.created_at.desc(), Item.id.desc())
             .limit(limit)
-            .offset(offset)
         )
 
-        async for item in result:
-            yield self.MAPPER.to_domain(item)
+        if cursor_payload:
+            stmt = stmt.where(
+                tuple_(Item.created_at, Item.id)
+                < tuple_(cursor_payload.created_at, cursor_payload.id)
+            )
+
+        result = await self._session.stream_scalars(stmt)
+
+        return [
+            self.MAPPER.to_domain(item)
+            async for item in result
+        ]
 
     async def delete_by_id(self, pk: int) -> bool:
         result: Result = await self._session.execute(
