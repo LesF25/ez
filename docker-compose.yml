@@ -33,5 +33,17 @@ services:
       timeout: 5s
       retries: 5
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - app
+    environment:
+      API_URL: http://localhost:8000
+
 volumes:
   postgres_data:
