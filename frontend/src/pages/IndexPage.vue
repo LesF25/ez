@@ -46,7 +46,6 @@
             </template>
           </q-infinite-scroll>
 
-          <!-- Финальное сообщение -->
           <div v-if="!itemStore.nextCursor && itemStore.items.length > 0" class="text-center q-pa-md text-grey italic">
             Данных больше нет
           </div>
@@ -65,14 +64,10 @@ const newItemText = ref('')
 const sending = ref(false)
 const infiniteRef = ref(null)
 
-/**
- * Обработка загрузки. index=1 — первый вызов при монтировании.
- */
 const onLoadMore = async (index, done) => {
   const isLoadMore = index > 1
   const cursorAfterUpdate = await itemStore.fetchItems(isLoadMore)
 
-  // Если курсор пришел null — отключаем скролл навсегда
   if (cursorAfterUpdate === null) {
     done(true)
   } else {
@@ -80,15 +75,12 @@ const onLoadMore = async (index, done) => {
   }
 }
 
-/**
- * Полный сброс и перезагрузка списка
- */
 const resetList = async () => {
   itemStore.items = []
   if (infiniteRef.value) {
-    infiniteRef.value.reset() // Сбрасываем индекс в 1
-    infiniteRef.value.resume() // Включаем, если был выключен через done(true)
-    infiniteRef.value.trigger() // Инициируем первую загрузку
+    infiniteRef.value.reset()
+    infiniteRef.value.resume()
+    infiniteRef.value.trigger()
   }
 }
 

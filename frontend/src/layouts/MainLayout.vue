@@ -7,7 +7,6 @@
     </q-header>
 
     <q-page-container>
-      <!-- БЕЗ ЭТОГО ТЕГА БУДЕТ БЕЛЫЙ ЭКРАН -->
       <router-view />
     </q-page-container>
   </q-layout>
